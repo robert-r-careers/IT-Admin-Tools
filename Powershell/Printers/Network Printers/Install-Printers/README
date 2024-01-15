@@ -17,24 +17,23 @@ The regular expressions are located in the script and new ones can be added if y
 #$NEW_REGEX_NAME
 
 
- ($htmlContent | Select-String -Pattern $BROTHER_PRINTERS -AllMatches).Matches)#+
+ ($htmlContent | Select-String -Pattern $NEW_REGEX_NAME -AllMatches).Matches)#+
                                       #($htmlContent | Select-String -Pattern $NEW_REGEX_NAME -AllMatches).Matches) 
 
 
 SEE SCRIPT LOCATION EXAMPLES BELOW
 
 # Define regular expression patterns for HTML elements (Printer Names)
-$SHARP_PRINTERS = '<tr>\s*<td>Name:<\/td>\s*<td>(.*?)<\/td>\s*<\/tr>'
-$HP_PRINTERS = '<p class="device-name" id="P1">(.*?)<\/p>'
-$BROTHER_PRINTERS = '<title>(.*?)<\/title>'
+$TR_TB_ELEMENT = '<tr>\s*<td>Name:<\/td>\s*<td>(.*?)<\/td>\s*<\/tr>'
+$CLASS_DN_ELEMENT = '<p class="device-name" id="P1">(.*?)<\/p>'
+$TITLE_ELEMENT = '<title>(.*?)<\/title>'
 # $NEW_REGEX_NAME = 
 
 
 
 # Process printers based on IPs
-    $foundValues = foreach ($match in  ($htmlContent | Select-String -Pattern $SHARP_PRINTERS -AllMatches).Matches +
-                                       ($htmlContent | Select-String -Pattern $HP_PRINTERS -AllMatches).Matches +
-                                       ($htmlContent | Select-String -Pattern $BROTHER_PRINTERS -AllMatches).Matches)#+
-                                      #($htmlContent | Select-String -Pattern $NEW_REGEX_NAME -AllMatches).Matches) 
-                                      {
+    $foundValues = foreach ($match in  ($htmlContent | Select-String -Pattern $TR_TB_ELEMENT -AllMatches).Matches +
+                                   ($htmlContent | Select-String -Pattern $CLASS_DN_ELEMENT -AllMatches).Matches +
+                                   ($htmlContent | Select-String -Pattern $TITLE_ELEMENT -AllMatches).Matches)#+
+                                  #($htmlContent | Select-String -Pattern $NEW_REGEX_NAME -AllMatches).Matches) 
 
