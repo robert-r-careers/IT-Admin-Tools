@@ -1,39 +1,38 @@
-Instructions for script operation
+"The script will prompt you for the printer IPs and then perform an 'Invoke-WebRequest' to the standard URL http://192.168.100.1. 
+If the first request fails, another request is made to a pool of alternate URLs, i.e., http://192.168.100.1/main.html.
 
-The workbook must be in the specified location (right now it's set to the current users "Desktop\install-printers\" directory.
-Update the script location if you change the path where the script lives
-$workbookPath = "$env:USERPROFILE\Desktop\install-printers\Workbook.xlsx"
+The content from the web request is stored in a variable, and then a search is performed for the 'ExpectedOutput' value via regular expression. 
+The value is stored and referenced in the Excel Workbook, sheet 'PrintDriverMap,' column A, and the respective values in the adjacent columns are collected for the 
+'Printer Name' (column B = DisplayName), 
+'Printer Driver Name' (column C = DriverName), 
+'Printer Driver Path' (column D = DriverPath), and 
+'Printer Port' (this value will be pulled from the prompted values).
 
-There are two sheets in the workbook "ReferencePool" "PrinterDriverMapoings"
+A custom name for the printer install is then created, 
+which is formed by combining the values from the worksheets 
+'PrintDriverMap,' column B 'DisplayName,'  
+'RefPool,' column B 'RoomNumber.'
 
-Reference Pool Sheet is used to store the data to append the Printer name, i.e."(61.102)(11300)" based on IP.
+The values will then be used to perform the printer install. 
+The script will show all the installed printers and prompt the user if they want to uninstall any printers.
 
-PrinterDriverMappings Sheet is used to store the data to match the Html.content to the driver anme and .inf file location.
+Workbook Sheets:
+RefPool Sheet:
++---------------+------------+
+| PossibleIPs   | RoomNumber |
++---------------+------------+
+| 192.168.100.1 | 12345      |
+| 192.168.100.2 | 54321      |
++---------------+------------+
 
-The Html.content is generated via Invoke-Webrequest and a regualar expression is used to parse the data into the "ExpectedOutput" of the Html element.
-The regular expressions are located in the script and new ones can be added if you update the follwoing sections 
-# need to be removed from the follwoing sections 
+PrintDriverMap Sheet:
++-------------------+--------------+-------------+------------------+
+| ExpectedOutput    | DisplayName  | DriverName  | DriverPath       |
++-------------------+--------------+-------------+------------------+
+| Brother Printer   | Brother Test | Test Driver | C:\test.inf      |
+| HP Printer        | HP Test      | HP Driver   | C:\hp_driver.inf |
++-------------------+--------------+-------------+------------------+
 
-#$NEW_REGEX_NAME
+Populate the workbook sheets with the respective information for your environment.
 
-
- ($htmlContent | Select-String -Pattern $NEW_REGEX_NAME -AllMatches).Matches)#+
-                                      #($htmlContent | Select-String -Pattern $NEW_REGEX_NAME -AllMatches).Matches) 
-
-
-SEE SCRIPT LOCATION EXAMPLES BELOW
-
-# Define regular expression patterns for HTML elements (Printer Names)
-$TR_TB_ELEMENT = '<tr>\s*<td>Name:<\/td>\s*<td>(.*?)<\/td>\s*<\/tr>'
-$CLASS_DN_ELEMENT = '<p class="device-name" id="P1">(.*?)<\/p>'
-$TITLE_ELEMENT = '<title>(.*?)<\/title>'
-# $NEW_REGEX_NAME = 
-
-
-
-# Process printers based on IPs
-    $foundValues = foreach ($match in  ($htmlContent | Select-String -Pattern $TR_TB_ELEMENT -AllMatches).Matches +
-                                   ($htmlContent | Select-String -Pattern $CLASS_DN_ELEMENT -AllMatches).Matches +
-                                   ($htmlContent | Select-String -Pattern $TITLE_ELEMENT -AllMatches).Matches)#+
-                                  #($htmlContent | Select-String -Pattern $NEW_REGEX_NAME -AllMatches).Matches) 
 
