@@ -1,4 +1,6 @@
-"The script will prompt you for the printer IPs and then perform an 'Invoke-WebRequest' to the standard URL 
+This script automates the installation process for network printers.
+
+The script will prompt you for the printer IPs and then perform an 'Invoke-WebRequest' to the standard URL 
 http://192.168.100.1
 If the first request fails, another request is made to a pool of alternate URLs, i.e., 
 http://192.168.100.1/main.html
