@@ -1,0 +1,40 @@
+"The script will prompt you for the printer IPs and then perform an 'Invoke-WebRequest' to the standard URL 
+http://192.168.100.1
+If the first request fails, another request is made to a pool of alternate URLs, i.e., 
+http://192.168.100.1/main.html
+
+The content from the web request is stored in a variable, and then a search is performed for the 'ExpectedOutput' value via regular expression. 
+The value is stored and referenced in the Excel Workbook, sheet 'PrintDriverMap,' column A, and the respective values in the adjacent columns are collected for the 
+'Printer Name' (column B = DisplayName), 
+'Printer Driver Name' (column C = DriverName), 
+'Printer Driver Path' (column D = DriverPath), and 
+'Printer Port' (this value will be pulled from the prompted values).
+
+A custom name for the printer install is then created, 
+which is formed by combining the values from the worksheets 
+'PrintDriverMap,' column B 'DisplayName,'  
+'RefPool,' column B 'RoomNumber.'
+
+The values will then be used to perform the printer install. 
+The script will show all the installed printers and prompt the user if they want to uninstall any printers.
+
+Workbook Sheets:
+RefPool Sheet:
++---------------+------------+
+| PossibleIPs   | RoomNumber |
++---------------+------------+
+| 192.168.100.1 | 12345      |
+| 192.168.100.2 | 54321      |
++---------------+------------+
+
+PrintDriverMap Sheet:
++-------------------+--------------+-------------+------------------+
+| ExpectedOutput    | DisplayName  | DriverName  | DriverPath       |
++-------------------+--------------+-------------+------------------+
+| Brother Printer   | Brother Test | Test Driver | C:\test.inf      |
+| HP Printer        | HP Test      | HP Driver   | C:\hp_driver.inf |
++-------------------+--------------+-------------+------------------+
+
+Populate the workbook sheets with the respective information for your environment.
+
+
