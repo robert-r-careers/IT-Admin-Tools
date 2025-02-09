@@ -1,3 +1,5 @@
+#This script was written for an enterprise environment using static IP's and saved into an excel spreadsheet. It invokes a webrequest to the printer web admin page and then parses the HTML data to pull the necessary info (printer make model and driver) and then use the info to install the range of printers.
+
 # Set Execution Policy
 Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser -Force
 
